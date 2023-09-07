@@ -1,10 +1,14 @@
 import React from 'react';
-import logo from './logo.svg';
+import UsersView from './components/UsersView';
+import AddModal from './components/AddModal';
 
 function App() {
   return (
     <div>
-      
+      <UsersView addButton searchBar/>
+      <br/>
+      <UsersView/>
+      <AddModal/>
     </div>
   );
 }
