@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 export const FlexibleDiv = styled.div`
@@ -12,7 +11,7 @@ export const BlueButton = styled.div`
     border-radius: 3px;
     min-width: 110px;    
     text-align: center;
-    & :hover {
+    &:hover {
         cursor: pointer;
     } 
 `;

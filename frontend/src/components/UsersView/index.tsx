@@ -1,6 +1,8 @@
 import { styled } from "styled-components";
 import FilteredTable from "./FilteredTable";
 import { BlueButton, FlexibleDiv } from "../shared";
+import { useAppDispatch } from "../../hooks";
+import { show } from "../../store/reducers/modal";
 
 interface IUserViewProps {
     addButton?: boolean,
@@ -8,7 +10,8 @@ interface IUserViewProps {
 };
 
 const UsersView: React.FC<IUserViewProps> = ({ addButton, searchBar }) => {
-
+    const dispatch = useAppDispatch()
+    
     return (
         <UsersDiv>
             <ActionsRow>
@@ -30,7 +33,7 @@ const UsersView: React.FC<IUserViewProps> = ({ addButton, searchBar }) => {
                     (addButton || searchBar) &&
                     <SearchAndAdd>
                         {searchBar && <input type="text" placeholder="Search table" />}
-                        {addButton && <BlueButton>Add User</BlueButton>}
+                        {addButton && <BlueButton onClick={()=>{dispatch(show())}}>Add User</BlueButton>}
                     </SearchAndAdd>
                 }
             </ActionsRow>

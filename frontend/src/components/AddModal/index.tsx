@@ -1,24 +1,28 @@
 import React from 'react';
 import styled from 'styled-components';
 import { BlueButton, FlexibleDiv, TransparentButton } from '../shared';
+import { hide } from '../../store/reducers/modal';
+import { useAppDispatch } from '../../hooks';
 
 const AddModal: React.FC<{}> = () => {
+    const dispatch = useAppDispatch();
+
     return (
         <ModalBG>
-            <Modal>
-            <h3>Add User</h3>
-            <FlexibleDiv>
-                <label>Name</label>
-                <input type="text" />
-            </FlexibleDiv>
-            <FlexibleDiv>
-                <label>Address</label>
-                <input type="text" />
-            </FlexibleDiv>
-            <ModalActions>
-                <TransparentButton>Cancel</TransparentButton>
-                <BlueButton>Confirm</BlueButton>
-            </ModalActions>
+            <Modal data-test="modal">
+                <h3>Add User</h3>
+                <FlexibleDiv>
+                    <label>Name</label>
+                    <input type="text" />
+                </FlexibleDiv>
+                <FlexibleDiv>
+                    <label>Address</label>
+                    <input type="text" />
+                </FlexibleDiv>
+                <ModalActions>
+                    <TransparentButton onClick={() => { dispatch(hide()) }} >Cancel</TransparentButton>
+                    <BlueButton>Confirm</BlueButton>
+                </ModalActions>
             </Modal>
         </ModalBG>);
 }
@@ -40,7 +44,7 @@ const ModalBG = styled.div`
         width: 100%;
         flex-direction: row;
     }
-    &  ${FlexibleDiv} {
+    & ${FlexibleDiv} {
         & input {
             flex-grow: 1;
         }
