@@ -9,9 +9,6 @@ interface UsersState {
 
 const initialState: UsersState = {
     list: [
-        { id: "adsfasf", name: "Yosi", address: "natanya", date: "1.2.2023" },
-        { id: "fsgsdg", name: "Avi", address: "ashdod", date: "1.3.2023" },
-        { id: "fhfh", name: "Braha", address: "Beit Alfa", date: "2.2.2023" },
     ],
     searchTerm: ''
 }
@@ -20,10 +17,14 @@ export const usersSlice = createSlice({
     name: 'users',
     initialState,
     reducers: {
-        setSearchTerm: (state, action: PayloadAction<string>) =>
-            ({ ...state, searchTerm: action.payload })
+        setUsers: (state, action: PayloadAction<User[]>) => {
+            state.list = action.payload;
+        },
+        setSearchTerm: (state, action: PayloadAction<string>) => {
+            state.searchTerm = action.payload;
+        }
     },
 })
 
-export const { setSearchTerm } = usersSlice.actions;
+export const { setSearchTerm, setUsers } = usersSlice.actions;
 export default usersSlice.reducer

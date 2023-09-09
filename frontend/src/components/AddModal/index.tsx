@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BlueButton, FlexibleDiv, TransparentButton } from '../shared';
 import { hide } from '../../store/reducers/modal';
 import { useAppDispatch } from '../../hooks';
+import { addUser, getUsers } from '../../api';
+import { setUsers } from '../../store/reducers/users';
 
 const AddModal: React.FC<{}> = () => {
     const dispatch = useAppDispatch();
+    const [name, setName] = useState('');
+    const [address, setAddress] = useState('');
+
+    const onConfirm = async () => {
+        const date = new Date().toDateString();
+        await addUser({name, address, date});
+        const newList = await getUsers();
+        dispatch(setUsers(newList))
+        dispatch(hide());
+    }
 
     return (
         <ModalBG>
@@ -13,15 +25,15 @@ const AddModal: React.FC<{}> = () => {
                 <h3>Add User</h3>
                 <FlexibleDiv>
                     <label>Name</label>
-                    <input type="text" />
+                    <input onChange={(e)=>setName(e.target.value)} type="text" />
                 </FlexibleDiv>
                 <FlexibleDiv>
                     <label>Address</label>
-                    <input type="text" />
+                    <input type="text" onChange={(e)=>setAddress(e.target.value)} />
                 </FlexibleDiv>
                 <ModalActions>
                     <TransparentButton onClick={() => { dispatch(hide()) }} >Cancel</TransparentButton>
-                    <BlueButton>Confirm</BlueButton>
+                    <BlueButton onClick={async() => { await onConfirm() }}>Confirm</BlueButton>
                 </ModalActions>
             </Modal>
         </ModalBG>);

@@ -12,7 +12,7 @@ interface IUserViewProps {
 
 const UsersView: React.FC<IUserViewProps> = ({ addButton, searchBar }) => {
     const dispatch = useAppDispatch()
-    
+
     return (
         <UsersDiv>
             <ActionsRow>
@@ -33,8 +33,8 @@ const UsersView: React.FC<IUserViewProps> = ({ addButton, searchBar }) => {
                 {
                     (addButton || searchBar) &&
                     <SearchAndAdd>
-                        {searchBar && <input type="text" placeholder="Search table" onChange={(e)=>dispatch(setSearchTerm(e.target.value))} />}
-                        {addButton && <BlueButton onClick={()=>{dispatch(show())}}>Add User</BlueButton>}
+                        {searchBar && <input type="text" placeholder="Search table" onChange={(e) => dispatch(setSearchTerm(e.target.value))} />}
+                        {addButton && <BlueButton onClick={() => { dispatch(show()) }}>Add User</BlueButton>}
                     </SearchAndAdd>
                 }
             </ActionsRow>
