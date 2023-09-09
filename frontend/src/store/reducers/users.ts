@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type User = { id: string, name: string, address: string, date: string };
+export type SearchKeys = keyof Omit<User, 'id'>;
 
 interface UsersState {
     list: User[],

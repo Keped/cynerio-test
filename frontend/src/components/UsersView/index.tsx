@@ -3,32 +3,35 @@ import FilteredTable from "./FilteredTable";
 import { BlueButton, FlexibleDiv } from "../shared";
 import { useAppDispatch } from "../../hooks";
 import { show } from "../../store/reducers/modal";
-import { setSearchTerm } from "../../store/reducers/users";
+import { SearchKeys, User, setSearchTerm } from "../../store/reducers/users";
+import { useState } from "react";
 
 interface IUserViewProps {
     addButton?: boolean,
     searchBar?: boolean
 };
 
-const UsersView: React.FC<IUserViewProps> = ({ addButton, searchBar }) => {
-    const dispatch = useAppDispatch()
 
+const UsersView: React.FC<IUserViewProps> = ({ addButton, searchBar }) => {
+    const [filteredCols, setFilteredCols] = useState<Record<SearchKeys, boolean>>({ name: true, address: true, date: true });
+    const toggleFilter = (keyName: SearchKeys) => {
+        const updated =  {...filteredCols};
+        updated[keyName] = !filteredCols[keyName];
+        setFilteredCols(updated);
+    }
+
+    const filters = (['name', 'address', 'date'] as SearchKeys[]).map(key => (
+        <FlexibleDiv>
+            <input type="checkbox" onClick={() => { toggleFilter(key) }} />
+            <label>{key}</label>
+        </FlexibleDiv>
+    ))
+    const dispatch = useAppDispatch();
     return (
         <UsersDiv>
             <ActionsRow>
                 <CheckboxRow>
-                    <FlexibleDiv>
-                        <input type="checkbox" id="Date" />
-                        <label>Date</label>
-                    </FlexibleDiv>
-                    <FlexibleDiv>
-                        <input type="checkbox" value="Name" />
-                        <label>Name</label>
-                    </FlexibleDiv>
-                    <FlexibleDiv>
-                        <input type="checkbox" value="Address" />
-                        <label>Address</label>
-                    </FlexibleDiv>
+                    {filters}                   
                 </CheckboxRow>
                 {
                     (addButton || searchBar) &&
@@ -38,7 +41,7 @@ const UsersView: React.FC<IUserViewProps> = ({ addButton, searchBar }) => {
                     </SearchAndAdd>
                 }
             </ActionsRow>
-            <FilteredTable />
+            <FilteredTable showCols={filteredCols}/>
         </UsersDiv>);
 };
 

@@ -1,10 +1,14 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { useAppSelector } from '../../hooks';
-import { User } from '../../store/reducers/users';
-type SearchKeys = keyof Omit<User, 'id'>;
+import { User, SearchKeys } from '../../store/reducers/users';
 
-const FilteredTable: React.FC<{}> = () => {
+interface IFilteredTableProps {
+    showCols: Record<SearchKeys, boolean>
+}
+const colNames = ['name', 'address', 'date'] as SearchKeys[];
+
+const FilteredTable: React.FC<IFilteredTableProps> = ({ showCols }) => {
     const usersList = useAppSelector(state => state.users.list);
     const searchTerm = useAppSelector(state => state.users.searchTerm);
 
@@ -14,7 +18,7 @@ const FilteredTable: React.FC<{}> = () => {
             return usersList;
         }
         for (const user of usersList) {
-            for (const fieldKey of (['name', 'address', 'date'] as SearchKeys[])) {
+            for (const fieldKey of (colNames)) {
                 if (user[fieldKey].toLowerCase().includes(searchTerm.toString().toLowerCase())) {
                     hits.push(user);
                     continue;
@@ -24,19 +28,15 @@ const FilteredTable: React.FC<{}> = () => {
         return hits;
     }, [searchTerm, usersList]);
 
-    const usersRows = usersAfterSearch.map(({ id, name, address, date }) => (
-        <tr key={id}>
-            <td>{date}</td>
-            <td>{name}</td>
-            <td>{address}</td>
+    const usersRows = usersAfterSearch.map((user) => (
+        <tr key={user.id}>
+            {colNames.filter(colName => showCols[colName]).map(colName => <td>{user[colName]}</td>)}
         </tr>));
     return (
         <NicerTable>
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Name</th>
-                    <th>Address</th>
+                    {colNames.filter(colName => showCols[colName]).map(colName => <th>{colName}</th>)}
                 </tr>
             </thead>
             <tbody>
