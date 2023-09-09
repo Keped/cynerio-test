@@ -3,7 +3,7 @@ import FilteredTable from "./FilteredTable";
 import { BlueButton, FlexibleDiv } from "../shared";
 import { useAppDispatch } from "../../hooks";
 import { show } from "../../store/reducers/modal";
-import { SearchKeys, User, setSearchTerm } from "../../store/reducers/users";
+import { SearchKeys, setSearchTerm } from "../../store/reducers/users";
 import { useState } from "react";
 
 interface IUserViewProps {
