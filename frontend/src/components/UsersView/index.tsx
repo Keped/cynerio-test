@@ -3,6 +3,7 @@ import FilteredTable from "./FilteredTable";
 import { BlueButton, FlexibleDiv } from "../shared";
 import { useAppDispatch } from "../../hooks";
 import { show } from "../../store/reducers/modal";
+import { setSearchTerm } from "../../store/reducers/users";
 
 interface IUserViewProps {
     addButton?: boolean,
@@ -32,13 +33,13 @@ const UsersView: React.FC<IUserViewProps> = ({ addButton, searchBar }) => {
                 {
                     (addButton || searchBar) &&
                     <SearchAndAdd>
-                        {searchBar && <input type="text" placeholder="Search table" />}
+                        {searchBar && <input type="text" placeholder="Search table" onChange={(e)=>dispatch(setSearchTerm(e.target.value))} />}
                         {addButton && <BlueButton onClick={()=>{dispatch(show())}}>Add User</BlueButton>}
                     </SearchAndAdd>
                 }
             </ActionsRow>
             <FilteredTable />
-        </UsersDiv>)
+        </UsersDiv>);
 };
 
 export default UsersView;

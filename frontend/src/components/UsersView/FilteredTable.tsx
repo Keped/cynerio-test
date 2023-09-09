@@ -1,7 +1,35 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
+import { useAppSelector } from '../../hooks';
+import { User } from '../../store/reducers/users';
+type SearchKeys = keyof Omit<User, 'id'>;
 
 const FilteredTable: React.FC<{}> = () => {
+    const usersList = useAppSelector(state => state.users.list);
+    const searchTerm = useAppSelector(state => state.users.searchTerm);
+
+    const usersAfterSearch = useMemo(() => {
+        const hits: User[] = [];
+        if (searchTerm === '') {
+            return usersList;
+        }
+        for (const user of usersList) {
+            for (const fieldKey of (['name', 'address', 'date'] as SearchKeys[])) {
+                if (user[fieldKey].toLowerCase().includes(searchTerm.toString().toLowerCase())) {
+                    hits.push(user);
+                    continue;
+                }
+            }
+        }
+        return hits;
+    }, [searchTerm, usersList]);
+
+    const usersRows = usersAfterSearch.map(({ id, name, address, date }) => (
+        <tr key={id}>
+            <td>{date}</td>
+            <td>{name}</td>
+            <td>{address}</td>
+        </tr>));
     return (
         <NicerTable>
             <thead>
@@ -12,21 +40,7 @@ const FilteredTable: React.FC<{}> = () => {
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1.1.1453</td>
-                    <td>Suliman the magnificent</td>
-                    <td>Istanbul (formerly Constantinopol)</td>
-                </tr>
-                <tr>
-                    <td>1.1.1453</td>
-                    <td>Suliman the magnificent</td>
-                    <td>Istanbul (formerly Constantinopol)</td>
-                </tr>
-                <tr>
-                    <td>1.1.1453</td>
-                    <td>Suliman the magnificent</td>
-                    <td>Istanbul (formerly Constantinopol)</td>
-                </tr>
+                {usersRows}
             </tbody>
         </NicerTable>);
 }
